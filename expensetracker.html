@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense Tracker Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a, #1e293b, #111827);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 430px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      color: white;
+      position: relative;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .profile h2 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .profile p {
+      color: #cbd5e1;
+      font-size: 13px;
+    }
+
+    .card {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 24px;
+      padding: 25px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+      top: -70px;
+      right: -60px;
+    }
+
+    .card p {
+      color: #e0e7ff;
+      font-size: 14px;
+    }
+
+    .balance {
+      font-size: 42px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 22px;
+    }
+
+    .stat-box {
+      background: rgba(255,255,255,0.12);
+      padding: 16px;
+      border-radius: 18px;
+      backdrop-filter: blur(8px);
+    }
+
+    .stat-box span {
+      font-size: 13px;
+      color: #dbeafe;
+    }
+
+    .stat-box h3 {
+      margin-top: 8px;
+      font-size: 22px;
+    }
+
+    .income {
+      color: #86efac;
+    }
+
+    .expense {
+      color: #fca5a5;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .section-title h3 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    form {
+      margin-bottom: 25px;
+    }
+
+    .input-group {
+      margin-bottom: 14px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-size: 15px;
+      outline: none;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: 0.3s ease;
+    }
+
+    select {
+      appearance: none;
+      cursor: pointer;
+      background: rgba(255,255,255,0.08);
+      color: white;
+    }
+
+    select option {
+      background: #1e293b;
+      color: white;
+    }
+
+    input::placeholder {
+      color: #cbd5e1;
+    }
+
+    input:focus {
+      border-color: #818cf8;
+      transform: scale(1.01);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 10px 20px rgba(59,130,246,0.3);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    .transaction-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .transaction {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.3s ease;
+    }
+
+    .transaction:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .transaction-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .plus-icon {
+      background: rgba(34,197,94,0.18);
+      color: #86efac;
+    }
+
+    .minus-icon {
+      background: rgba(239,68,68,0.18);
+      color: #fca5a5;
+    }
+
+    .transaction h4 {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .transaction p {
+      color: #cbd5e1;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .amount {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .positive {
+      color: #86efac;
+    }
+
+    .negative {
+      color: #fca5a5;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+
+      .balance {
+        font-size: 34px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <div class="profile">
+        <div class="avatar">H</div>
+        <div>
+          <h2>Expense Tracker</h2>
+          <p>Track your spending smartly</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p>Total Balance</p>
+      <div class="balance" id="balance">₹0.00</div>
+
+      <div class="stats">
+        <div class="stat-box">
+          <span>Income</span>
+          <h3 class="income" id="income">₹0</h3>
+        </div>
+
+        <div class="stat-box">
+          <span>Expenses</span>
+          <h3 class="expense" id="expense">₹0</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <h3>Add Transaction</h3>
+    </div>
+
+    <form id="expense-form">
+      <div class="input-group">
+        <input type="text" id="text" placeholder="Transaction Title" required>
+      </div>
+
+      <div class="input-group">
+        <input type="number" id="amount" placeholder="Enter Amount" required>
+      </div>
+
+      <div class="input-group">
+        <select id="type" required>
+          <option value="">Select Transaction Type</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+      </div>
+
+      <button type="submit">Add Transaction</button>
+    </form>
+
+    <div class="section-title">
+      <h3>Recent Transactions</h3>
+    </div>
+
+    <div class="transaction-list" id="transaction-list"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('expense-form');
+    const text = document.getElementById('text');
+    const amount = document.getElementById('amount');
+    const transactionList = document.getElementById('transaction-list');
+
+    const balance = document.getElementById('balance');
+    const income = document.getElementById('income');
+    const expense = document.getElementById('expense');
+
+    let transactions = [];
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const type = document.getElementById('type');
+
+      const enteredAmount = +amount.value;
+
+      const transaction = {
+        id: Date.now(),
+        text: text.value,
+        amount: type.value === 'expense' ? -enteredAmount : enteredAmount,
+      };
+
+      transactions.push(transaction);
+
+      addTransaction(transaction);
+      updateValues();
+
+      text.value = '';
+      amount.value = '';
+      type.value = '';
+    });
+
+    function addTransaction(transaction) {
+      const div = document.createElement('div');
+      div.classList.add('transaction');
+
+      const sign = transaction.amount > 0 ? '+' : '-';
+
+      div.innerHTML = `
+        <div class="transaction-left">
+          <div class="icon ${transaction.amount > 0 ? 'plus-icon' : 'minus-icon'}">
+            ${transaction.amount > 0 ? '+' : '-'}
+          </div>
+
+          <div>
+            <h4>${transaction.text}</h4>
+            <p>${new Date().toLocaleDateString()}</p>
+          </div>
+        </div>
+
+        <div class="amount ${transaction.amount > 0 ? 'positive' : 'negative'}">
+          ${sign}₹${Math.abs(transaction.amount)}
+        </div>
+      `;
+
+      transactionList.prepend(div);
+    }
+
+    function updateValues() {
+      const amounts = transactions.map(transaction => transaction.amount);
+
+      const total = amounts.reduce((acc, item) => acc + item, 0).toFixed(2);
+
+      const incomeTotal = amounts
+        .filter(item => item > 0)
+        .reduce((acc, item) => acc + item, 0)
+        .toFixed(2);
+
+      const expenseTotal = (
+        amounts
+          .filter(item => item < 0)
+          .reduce((acc, item) => acc + item, 0) * -1
+      ).toFixed(2);
+
+      balance.innerText = `₹${total}`;
+      income.innerText = `₹${incomeTotal}`;
+      expense.innerText = `₹${expenseTotal}`;
+    }
+  </script>
+</body>
+</html>
